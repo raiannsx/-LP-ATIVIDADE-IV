@@ -2,62 +2,69 @@
 #include <stdlib.h>
 #include <locale.h>
 
-#define ra 5
+#define NUMERO_ALUNOS 5
 
-void cabecalho()
-{
+struct Aluno {
+    char nome[50];
+    char dataNascimento[20];
+    float primeiraNota;
+    float segundaNota;
+    float media;
+};
+
+void cabecalho() {
     printf("\n-------------------------------\n");
     printf("\tMedia do Aluno");
     printf("\n-------------------------------\n");
 }
 
-void limpa()
-{
-    fflush(stdin);
+void limpaTela() {
+    int characte;
+    while ((characte = getchar()) != '\n' && characte != EOF);
     system("cls || clear");
 }
 
-void media(float notas[])
-{
-    int i;
-    float medias;
-    float soma = 0;
-    for (i = 0; i < ra; i++)
-    {
-        soma += notas[i];
-    }
-    
-    medias = soma / 3;
+float calcularMedia(float nota1, float nota2) {
+    return (nota1 + nota2) / 2.0;
+}
 
-    if (medias >= 7)
-    {
+void situacaoAluno(float media) {
+    if (media >= 7) {
         printf("Aluno Aprovado!\n");
-        printf("Media Final do Aluno: %.1f\n", medias);
-    }
-    else
-    {
+        printf("MEdia Final do Aluno: %.1f\n", media);
+    } else {
         printf("Aluno Reprovado!\n");
-        printf("Media Final do Aluno: %.1f\n", medias);
+        printf("Média Final do Aluno: %.1f\n", media);
     }
 }
 
-int main()
-{
+int main() {
     setlocale(LC_ALL, "portuguese");
 
-    float notas[ra];
     int i;
+    struct Aluno alunos[NUMERO_ALUNOS];
 
-    cabecalho();
-    for (i = 0; i < ra; i++)
-    {
-        printf("Digite a %d nota do aluno: ", i + 1);
-        scanf("%f", &notas[i]);
+    for (i = 0; i < NUMERO_ALUNOS; i++) {
+        cabecalho();
+
+        printf("Digite o nome do aluno %d: ", i + 1);
+        scanf("%s", alunos[i].nome);
+
+        printf("Digite a data de nascimento do aluno %d: ", i + 1);
+        scanf("%s", alunos[i].dataNascimento);
+
+        printf("Digite a primeira nota do aluno %d: ", i + 1);
+        scanf("%f", &alunos[i].primeiraNota);
+
+        printf("Digite a segunda nota do aluno %d: ", i + 1);
+        scanf("%f", &alunos[i].segundaNota);
+
+        alunos[i].media = calcularMedia(alunos[i].primeiraNota, alunos[i].segundaNota);
+
+        limpaTela();
+        cabecalho();
+        situacaoAluno(alunos[i].media);
     }
-    limpa();
-
-    cabecalho();
-    media(notas);
 
     return 0;
 }
